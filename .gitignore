@@ -1,0 +1,15 @@
+.zephir
+ext
+.codelite
+.ctagsd
+*.phprj
+compile-errors.log
+compile.log
+composer.lock
+vendor*
+cron/migrations/migrations.sh
+maddy_mo.db
+maddy_mo.key
+public/index.php
+public/ui.php
+public/ui.css
