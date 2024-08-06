@@ -28,8 +28,9 @@ namespace MaddyMo;
 use MaddyMo\Controllers\Controller;
 use MaddyMo\Controllers\Dashboard;
 use MaddyMo\Controllers\Database;
+use MaddyMo\Controllers\Settings;
 use MaddyMo\Exceptions\Exception;
-use MaddyMo\Models\Settings;
+use MaddyMo\Models\Settings as SettingsModel;
 use MaddyMo\Ui\Head;
 
 class MaddyMo extends Controller
@@ -68,7 +69,7 @@ class MaddyMo extends Controller
         let this->db = new Database(db, username, password);
 
         var settings;
-        let settings = new Settings();
+        let settings = new SettingsModel();
         let settings->db_file = db;
         let settings->url_key_file = url_key;
         let settings->url_key = trim(file_get_contents(url_key), "\n");
@@ -87,9 +88,9 @@ class MaddyMo extends Controller
         }
 
         var routes = [
-            "/dashboard": "dashboard"
+            "/dashboard": "dashboard",
             //"/accounts": "accounts",            
-            //"/settings": "settings",
+            "/settings": "settings"
             //"/users": "users"
         ];
 
@@ -161,7 +162,7 @@ class MaddyMo extends Controller
         echo "<!DOCTYPE html>
             <html lang='en'>" . head->build() . "
                 <body>
-                    <div class='row'>
+                    <div class='row w-100'>
                         <div id='side-menu' class='col-auto'>
                             <h1>Maddy Mo</h1>
                             <ul>
@@ -236,6 +237,13 @@ class MaddyMo extends Controller
         }
 
         return [username, password];
+    }
+
+    private function settings(string path)
+    {
+        var controller;
+        let controller = new Settings();
+        return controller->router(path, this->db, this->settings);
     }
 
     private function throwError(string message, bool commandline)

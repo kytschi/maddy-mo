@@ -72,6 +72,21 @@ class Head extends Controller
         return "<style>
         :root {
             --text-colour: #221E1F;
+            --text-danger: #E55353;
+
+            --success-background-colour: #3DAD5B;
+            --active-background-colour: #71C2FF;
+            --deleted-background-colour: #E55353;
+            --disabled-background-colour: #9AA2AC;
+            --warning-background-colour: #FABD38;
+
+            /* Box */
+            --box-background-colour: #fff;
+            --box-radius: 0.375rem;
+            --box-border-colour: rgba(0, 0, 0, 0.175);
+            --box-title-background-colour: #F8F8F8;
+            --box-title-border-colour: rgba(0, 0, 0, 0.175);
+            --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         }
 
         html, body {
@@ -90,9 +105,19 @@ class Head extends Controller
             text-decoration: none;
         }
 
+        button, .btn {
+            display: block;
+            padding: 10px 12px;
+            border: 1px solid var(--box-border-colour);
+            border-radius: var(--box-radius);
+        }
+        .btn-success {
+            background-color: var(--success-background-colour);
+            color: #fff;
+        }
+
         .row {
             display:flex;
-            width: 100%;
         }
         .col {
             flex: 1 0 0%;
@@ -101,26 +126,165 @@ class Head extends Controller
             flex: 0 0 auto;
             width: auto;
         }
+        .gutters {
+            gap: 20px;
+        }
+        .input-group {
+            display:flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        .input-group label, .input-group input, .input-group textarea {
+            flex: 1 0 0%;
+            width: 100%;
+            margin-bottom: 7px;
+        }
+        .input-group input, .input-group textarea {
+            display: block;
+            width: calc(100% - (2 * .75rem));
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-clip: padding-box;
+            border: 1px solid var(--box-border-colour);
+            border-radius: var(--box-radius);
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+        .required {
+            color: var(--text-danger);
+        }
 
+        .box, .table, .pagination {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: var(--box-background-colour);
+            background-clip: border-box;
+            border: 1px solid var(--box-border-colour);
+            border-radius: var(--box-radius);
+        }
+        .pagination {
+            padding: 20px;
+        }
+        .pagination span {
+            float: left;
+        }
+        .pagination div {
+            text-align: right;
+            float: right;
+        }
+        .pagination a {
+            margin-left: 10px;
+        }
+        .pagination a.selected {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        #login.box {
+            width: 50%;
+        }
+        .alert {
+            border: 1px solid var(--box-border-colour);
+            box-shadow: var(--box-shadow);
+            background-color: var(--box-background-colour);
+            margin-bottom: 40px;
+            font-weight: bold;
+            padding: 20px;
+        }
+        .box-body {
+            padding: 20px 20px;
+        }
+        .box-footer {
+            padding: 20px 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .box-footer a, .box-footer button {
+            margin-left: 20px;
+        }
+        .box-title {
+            display: flex;
+            flex-direction: row;
+            border-top-left-radius: var(--box-radius);
+            border-top-right-radius: var(--box-radius);
+        }
+        .box-title, .table th, .table td {
+            padding: 20px;
+            border-bottom: 1px solid var(--box-border-colour);
+        }
+        .box-title, .table th {
+            background-color: var(--box-title-background-colour);
+        }
+        .table th, .table td {
+            vertical-align: top;
+            text-align: left;
+            border-right: 1px solid var(--box-border-colour);
+        }
+        .table tr.deleted {
+            color: var(--text-deleted);
+            text-decoration: line-through;
+        }
+        .table tr .blank {
+            background-color: var(--box-disabled-background-colour);
+        }
+        .table tr .total {
+            background-color: var(--box-title-background-colour);
+            text-align: right;
+        }
+        .table .buttons {
+            text-align: right;
+        }
+        .table .buttons .mini {
+            float: right !important;
+        }
+        .error .box-body, .success .box-body {
+            text-transform: uppercase;
+        }
+        .error .box-body p, .success .box-body p {
+            padding: 0;
+            margin: 0;
+        }
+        .deleted.alert, .deleted .box-title {
+            background-color: var(--box-deleted-background-colour);
+        }
+        .warning.alert {
+            background-color: var(--box-warning-background-colour);
+        }
+        
         #header {
             background-color: #fff;
             border-bottom: 1px solid #dbdfe6;
         }
-        #header .col, #page-body .col {
+        #header .col, #page-body {
             padding: 20px;
+        }
+        #page-body .row {
+            margin-bottom: 20px;
         }
         #side-menu h1 {
             margin-top: 0;
             padding-top: 0;
             font-size: 16pt;
         }
+        #page {
+            width: calc(100% - 240px);
+            margin-left: 240px;
+        }
         #side-menu {
+            position: fixed;
             padding: 20px;
             width: 200px !important;
             color: #fff;
             background-color: #212631;
             border-right: 1px solid #323a49;
-            height: 100vh;
+            min-height: 100vh;
         }
         #side-menu a {
             color: #fff;
@@ -134,6 +298,17 @@ class Head extends Controller
         }
         #side-menu li svg {
             margin-right: 10px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .w-100 {
+            width: 100% !important;
+        }
+        .w-50 {
+            width: 50% !important;
         }
         </style>";
     }

@@ -31,10 +31,16 @@ use MaddyMo\Ui\Head;
 class Controller
 {
     public db;
+    public global_url = "/";
     public routes = [];
     public settings;
 
     public per_page = 100;
+
+    public function __construct()
+    {
+        
+    }
 
     public function cleanUrl(string path, string clean)
     {
@@ -69,7 +75,7 @@ class Controller
 
     public function header(title)
     {
-        return "<div id='header' class='row'>
+        return "<div id='header' class='row w-100'>
             <div class='col'>" . title . "</div>
         </div>";
     }
@@ -130,6 +136,7 @@ class Controller
 
         let this->db = database;
         let this->settings = settings;
+        let this->global_url = this->urlAddKey(this->global_url);
 
         for route, func in this->routes {
             if (strpos(path, this->urlAddKey(route)) !== false) {
@@ -138,6 +145,28 @@ class Controller
         }
 
         return "";
+    }
+
+    public function saveFailed(string message)
+    {
+        return "<div class='box error'>
+        <div class='box-title'>
+            <span>save error</span>
+        </div>
+        <div class='box-body'>
+            <p>" . message . "</p>
+        </div></div>";
+    }
+
+    public function saveSuccess(string message)
+    {
+        return "<div class='box success'>
+        <div class='box-title'>
+            <span>save all done</span>
+        </div>
+        <div class='box-body'>
+            <p>" . message . "</p>
+        </div></div>";
     }
 
     public function urlAddKey(string path)
