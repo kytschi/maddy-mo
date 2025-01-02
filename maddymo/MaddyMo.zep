@@ -25,6 +25,7 @@
 */
 namespace MaddyMo;
 
+use MaddyMo\Controllers\Accounts;
 use MaddyMo\Controllers\Controller;
 use MaddyMo\Controllers\Dashboard;
 use MaddyMo\Controllers\Database;
@@ -69,7 +70,7 @@ class MaddyMo extends Controller
         let this->db = new Database(db, username, password);
 
         var settings;
-        let settings = new SettingsModel();
+        let settings = this->db->get("SELECT * FROM settings LIMIT 1");
         let settings->db_file = db;
         let settings->url_key_file = url_key;
         let settings->url_key = trim(file_get_contents(url_key), "\n");
@@ -88,10 +89,9 @@ class MaddyMo extends Controller
         }
 
         var routes = [
-            "/dashboard": "dashboard",
-            //"/accounts": "accounts",            
-            "/settings": "settings"
-            //"/users": "users"
+            "/accounts": "Accounts",
+            "/dashboard": "Dashboard",
+            "/settings": "Settings"
         ];
 
         var code = 404, path, parsed, output = "", route, func, logged_in = false;
@@ -134,6 +134,13 @@ class MaddyMo extends Controller
         this->head(code);
         echo output;
         this->footer(logged_in);
+    }
+
+    private function accounts(string path)
+    {
+        var controller;
+        let controller = new Accounts();
+        return controller->router(path, this->db, this->settings);
     }
 
     private function dashboard(string path)
@@ -248,6 +255,6 @@ class MaddyMo extends Controller
 
     private function throwError(string message, bool commandline)
     {
-        throw new Exception(message, (commandline) ? true : false);
+        throw new Exception(message, commandline);
     }
 }

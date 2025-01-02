@@ -37,9 +37,10 @@ class Controller
 
     public per_page = 100;
 
-    public function __construct()
+    public function __construct(settings = null, db = null)
     {
-        
+        let this->settings = settings;
+        let this->db = db;
     }
 
     public function cleanUrl(string path, string clean)
@@ -60,6 +61,14 @@ class Controller
         <div class='box-body'>
             <p>" . message . "</p>
         </div></div>";
+    }
+
+    public function getPageId(string path)
+    {
+        var splits;
+
+        let splits = explode("/", path);
+        return array_pop(splits);
     }
 
     public function info(string message)
@@ -172,6 +181,16 @@ class Controller
     public function urlAddKey(string path)
     {
         return "/" . (this->settings ? this->settings->url_key : "") . path;
+    }
+
+    public function urlDecode(string value)
+    {
+        return urldecode(str_replace("%2E", ".", value));
+    }
+
+    public function urlEncode(string value)
+    {
+        return str_replace(".", "%2E", urlencode(value));
     }
 
     public function validate(array data, array checks)

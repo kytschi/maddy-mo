@@ -53,7 +53,20 @@ Open the `index.php` and replace the lines with location of where your files are
 $db = 'mysql:dbname=maddy_mo;host=127.0.0.1;UID=maddy_mo;PWD=maddy_mo;';
 ```
 
-### Step 6: login and configure the settings
+### Step 6: permissions
+Add your web server user to `sudoers` so that is can execute the `maddy` binary.
+
+```sh
+sudo visudo
+```
+
+And add the following line making sure to correct the web server user `www-data` to match that of your setup.
+
+```sh
+www-data ALL=(root) NOPASSWD:/usr/local/bin/maddy
+```
+
+### Step 7: login and configure the settings
 Using your `maddy_mo.key` you generated in the previous step, output it's contents.
 
 ```sh
@@ -72,7 +85,3 @@ The default login is username: `maddy-mo` and password: `letmein` **CHANGE THIS!
 **Don't use something like `admin` or `root` be creative!**
 
 Next from the `settings` set the various folders and commands to match your server setup.
-
-The `CRON output folder` is where a cron file is generated to allow you to run a cron to trigger `Maddy Mo` to automatically scan. Make sure your webserver user has write permissions to the `CRON output folder` folder.
-
-**Make sure that the webserver user can read those webserver log files also.**

@@ -27,6 +27,7 @@ namespace MaddyMo\Controllers;
 
 use MaddyMo\Controllers\Controller;
 use MaddyMo\Exceptions\Exception;
+use MaddyMo\Ui\Gfx;
 
 class Settings extends Controller
 {
@@ -37,13 +38,15 @@ class Settings extends Controller
 
     public function index(string path)
     {
-        var html = "", data, status;
+        var html = "", data, status, gfx;
+        let gfx = new Gfx();
 
         if (isset(_POST["save"])) {
             if (!this->validate(
                 _POST,
                 [
                     "config",
+                    "executable",
                     "hostname",
                     "primary_domain",
                     "local_domains"
@@ -55,11 +58,17 @@ class Settings extends Controller
                     "UPDATE settings 
                     SET 
                         config=:config,
-                        hostname=:hostname
+                        executable=:executable,
+                        hostname=:hostname,
+                        primary_domain=:primary_domain,
+                        local_domains=:local_domains 
                     WHERE ID IS NOT NULL",
                     [
                         "config": _POST["config"],
-                        "hostname": _POST["hostname"]
+                        "executable": _POST["executable"],
+                        "hostname": _POST["hostname"],
+                        "primary_domain": _POST["primary_domain"],
+                        "local_domains": _POST["local_domains"]
                     ]
                 );
 
@@ -84,23 +93,13 @@ class Settings extends Controller
                             <span class='col'>Settings</span>
                             <span class='col required text-right'>* required fields</span>
                         </div>
-                        <div class='box-body'>
-                            <div class='input-group'>
-                                <label>Location<span class='required'>*</span></label>
-                                <input name='config' value='" . data->config . "' required='required'>
-                            </div>
-                            <div class='input-group'>
-                                <label>Hostname<span class='required'>*</span></label>
-                                <input name='hostname' value='" . data->hostname . "' required='required'>
-                            </div>
-                            <div class='input-group'>
-                                <label>Primary domain<span class='required'>*</span></label>
-                                <input name='primary_domain' value='" . data->primary_domain . "' required='required'>
-                            </div>
-                            <div class='input-group'>
-                                <label>Local domains<span class='required'>*</span></label>
-                                <input name='local_domains' value='" . data->local_domains . "' required='required'>
-                            </div>
+                        <div class='box-body'>" .
+                            gfx->text("Config location", "config", data->config, true) .
+                            gfx->text("Executable location", "executable", data->executable, true) .
+                            gfx->text("Hostname", "hostname", data->hostname, true) .
+                            gfx->text("Primary domain", "primary_domain", data->primary_domain, true) .
+                            gfx->text("Local domains", "local_domains", data->local_domains, true) .
+                            "
                         </div>
                         <div class='box-footer'>
                             <button class='btn-success' type='submit' name='save'>Save</button>

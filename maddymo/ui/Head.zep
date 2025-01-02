@@ -87,6 +87,10 @@ class Head extends Controller
             --box-title-background-colour: #F8F8F8;
             --box-title-border-colour: rgba(0, 0, 0, 0.175);
             --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+
+            /* Table */
+            --table-accent-bg: transparent;
+            --table-striped-bg: rgba(0, 0, 0, 0.05);
         }
 
         html, body {
@@ -118,6 +122,7 @@ class Head extends Controller
 
         .row {
             display:flex;
+            flex-wrap: wrap;
         }
         .col {
             flex: 1 0 0%;
@@ -125,6 +130,10 @@ class Head extends Controller
         .col-auto {
             flex: 0 0 auto;
             width: auto;
+        }
+        .col-full {
+            flex: 0 0 auto;
+            width: 100%;
         }
         .gutters {
             gap: 20px;
@@ -159,7 +168,7 @@ class Head extends Controller
             color: var(--text-danger);
         }
 
-        .box, .table, .pagination {
+        .box, .pagination {
             position: relative;
             display: flex;
             flex-direction: column;
@@ -169,6 +178,9 @@ class Head extends Controller
             background-clip: border-box;
             border: 1px solid var(--box-border-colour);
             border-radius: var(--box-radius);
+        }
+        .box {
+            margin-bottom: 50px;
         }
         .pagination {
             padding: 20px;
@@ -215,35 +227,48 @@ class Head extends Controller
             border-top-left-radius: var(--box-radius);
             border-top-right-radius: var(--box-radius);
         }
-        .box-title, .table th, .table td {
+        .box-title, table th, table td {
             padding: 20px;
             border-bottom: 1px solid var(--box-border-colour);
         }
-        .box-title, .table th {
+        .box-title, table th {
             background-color: var(--box-title-background-colour);
         }
-        .table th, .table td {
+
+        table  {
+            width: 100%;
+            margin-bottom: 1rem;
             vertical-align: top;
+            background-color: var(--box-background-colour);
+            border-color: var(--box-border-colour);
+        }
+        table > thead {
+            vertical-align: bottom;
+        }
+        table > tbody {
+            vertical-align: inherit;
+        }
+        tbody, td, tfoot, th, thead, tr {
             text-align: left;
-            border-right: 1px solid var(--box-border-colour);
+            border-color: inherit;
+            border-style: solid;
+            border-width: 0;
         }
-        .table tr.deleted {
-            color: var(--text-deleted);
-            text-decoration: line-through;
+        table > :not(:last-child) > :last-child > * {
+            border-bottom-color: currentColor;
         }
-        .table tr .blank {
-            background-color: var(--box-disabled-background-colour);
+        table > :not(caption) > * > * {
+            padding: .5rem .5rem;
+            background-color: var(--box-background-colour);
+            border-bottom-width: 1px;
+            box-shadow: inset 0 0 0 9999px var(--table-accent-bg);
         }
-        .table tr .total {
-            background-color: var(--box-title-background-colour);
-            text-align: right;
+        table > tbody > tr:nth-of-type(2n+1) {
+            --bs-table-accent-bg: var(--table-striped-bg);
+            /*color: var(--table-striped-color);*/
         }
-        .table .buttons {
-            text-align: right;
-        }
-        .table .buttons .mini {
-            float: right !important;
-        }
+
+        
         .error .box-body, .success .box-body {
             text-transform: uppercase;
         }
