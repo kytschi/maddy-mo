@@ -94,11 +94,11 @@ class Settings extends Controller
                             <span class='col required text-right'>* required fields</span>
                         </div>
                         <div class='box-body'>" .
-                            gfx->text("Config location", "config", data->config, true) .
-                            gfx->text("Executable location", "executable", data->executable, true) .
-                            gfx->text("Hostname", "hostname", data->hostname, true) .
-                            gfx->text("Primary domain", "primary_domain", data->primary_domain, true) .
-                            gfx->text("Local domains", "local_domains", data->local_domains, true) .
+                            gfx->text("Config location", "config", "", data->config, true) .
+                            gfx->text("Executable location", "executable", "", data->executable, true) .
+                            gfx->text("Hostname", "hostname", "", data->hostname, true) .
+                            gfx->text("Primary domain", "primary_domain", "", data->primary_domain, true) .
+                            gfx->text("Local domains", "local_domains", "", data->local_domains, true) .
                             "
                         </div>
                         <div class='box-footer'>

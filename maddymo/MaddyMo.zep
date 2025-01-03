@@ -30,12 +30,15 @@ use MaddyMo\Controllers\Controller;
 use MaddyMo\Controllers\Dashboard;
 use MaddyMo\Controllers\Database;
 use MaddyMo\Controllers\Settings;
+use MaddyMo\Controllers\Users;
 use MaddyMo\Exceptions\Exception;
 use MaddyMo\Models\Settings as SettingsModel;
 use MaddyMo\Ui\Head;
 
 class MaddyMo extends Controller
 {
+    private logged_in = false;
+
     public function __construct(string db, string url_key = "", bool commandline = false)
     {
         var splits, username = "", password = "";
@@ -74,6 +77,7 @@ class MaddyMo extends Controller
         let settings->db_file = db;
         let settings->url_key_file = url_key;
         let settings->url_key = trim(file_get_contents(url_key), "\n");
+        let settings->session_key = substr(settings->url_key, 0, 16);
         let this->settings = settings;
 
         if (strpos(_SERVER["REQUEST_URI"], this->settings->url_key) === false) {
@@ -82,19 +86,21 @@ class MaddyMo extends Controller
         }
 
         if (session_status() === 1) {
-            session_name(settings->url_key);
+            session_name(settings->session_key);
             ini_set("session.gc_maxlifetime", 3600);
             ini_set("session.cookie_lifetime", 3600);
             session_start();
         }
 
         var routes = [
+            "/locked": "Users",
             "/accounts": "Accounts",
             "/dashboard": "Dashboard",
-            "/settings": "Settings"
+            "/settings": "Settings",
+            "/users": "Users"
         ];
 
-        var code = 404, path, parsed, output = "", route, func, logged_in = false;
+        var code = 404, path, parsed, output = "", route, func;
 
         let parsed = parse_url(_SERVER["REQUEST_URI"]);
         let path = "/" . trim(parsed["path"], "/");
@@ -103,17 +109,17 @@ class MaddyMo extends Controller
             let path = this->urlAddKey("/dashboard");
         }
         
-        /*if (!isset(_SESSION[settings->url_key])) {
+        if (!isset(_SESSION[settings->session_key])) {
             let path = this->urlAddKey("/locked");
-            let _SESSION[settings->url_key] = null;
+            let _SESSION[settings->session_key] = null;
         }
 
-        if (empty(_SESSION[settings->url_key])) {
+        if (empty(_SESSION[settings->session_key])) {
             let path = this->urlAddKey("/locked");
-        } else {*/
-            let logged_in = true;
+        } else {
+            let this->logged_in = true;
             let code = 200;
-        //}
+        }
 
         try {
             for route, func in routes {
@@ -133,7 +139,7 @@ class MaddyMo extends Controller
 
         this->head(code);
         echo output;
-        this->footer(logged_in);
+        this->footer();
     }
 
     private function accounts(string path)
@@ -150,7 +156,7 @@ class MaddyMo extends Controller
         return controller->router(path, this->db, this->settings);
     }
 
-    private function footer(bool logged_in = false)
+    private function footer()
     {
         echo "</div></div></body></html>";
     }
@@ -169,7 +175,9 @@ class MaddyMo extends Controller
         echo "<!DOCTYPE html>
             <html lang='en'>" . head->build() . "
                 <body>
-                    <div class='row w-100'>
+                    <div class='row w-100'>";
+        if (this->logged_in) {
+            echo "
                         <div id='side-menu' class='col-auto'>
                             <h1>Maddy Mo</h1>
                             <ul>
@@ -201,8 +209,9 @@ class MaddyMo extends Controller
                                     <a href='" . this->urlAddKey("/users") . "'>Users</a>
                                 </li>
                             </ul>
-                        </div>
-                        <div id='page' class='col'>";
+                        </div>";
+        }
+        echo "<div" . (this->logged_in ? " id='page'" : "") . " class='col'>";
     }
 
     private function notFound()
@@ -256,5 +265,12 @@ class MaddyMo extends Controller
     private function throwError(string message, bool commandline)
     {
         throw new Exception(message, commandline);
+    }
+
+    private function users(string path)
+    {
+        var controller;
+        let controller = new Users();
+        return controller->router(path, this->db, this->settings);
     }
 }

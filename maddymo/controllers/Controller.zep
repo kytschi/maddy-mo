@@ -52,9 +52,17 @@ class Controller
         );
     }
 
+    public function deletedState(string message)
+    {
+        return "<div class='box error'>
+        <div class='box-body'>
+            <p>I'm in a deleted state</p>
+        </div></div>";
+    }
+
     public function error(string message = "Missing required fields")
     {
-        return "<div class='error box wfull'>
+        return "<div class='error box w-100'>
         <div class='box-title'>
             <span>Error</span>
         </div>
@@ -71,9 +79,17 @@ class Controller
         return array_pop(splits);
     }
 
+    public function getUserId()
+    {
+        if (isset(_SESSION[this->settings->session_key])) {
+            return _SESSION[this->settings->session_key];
+        }
+        return null;
+    }
+
     public function info(string message)
     {
-        return "<div class='info box wfull'>
+        return "<div class='info box w-100'>
             <div class='box-title'>
                 <span>Info</span>
             </div>
@@ -169,7 +185,7 @@ class Controller
 
     public function saveSuccess(string message)
     {
-        return "<div class='box success'>
+        return "<div class='box success w-100'>
         <div class='box-title'>
             <span>save all done</span>
         </div>
@@ -207,16 +223,5 @@ class Controller
             let iLoop = iLoop + 1;
         }
         return true;
-    }
-
-    public function writeMigrations()
-    {
-        file_put_contents(
-            rtrim(this->settings->cron_folder, "/") . "/migrations/migrations.sh",
-        "#!/bin/bash
-# DO NOT EDIT, AUTOMATICALLY CREATED BY MADDY MO
-
-php -r \"use MaddyMo\\MaddyMo; new MaddyMo('" . this->settings->db_file . "', '" . this->settings->url_key_file . "', false, true);\";"
-        );
     }
 }

@@ -109,8 +109,8 @@ class Accounts extends Controller
         <div id='page-body'>
             <form class='row gutters' method='post'>
                 <div class='col-full'>
-                    <div class='box'>
-                        <div class='box-body row'>
+                    <div class='toolbar'>
+                        <div class='row'>
                             <div class='col'>" .
                                 gfx->buttonBack(this->global_url, "Back to accounts list") .
                             "</div>
@@ -156,41 +156,13 @@ class Accounts extends Controller
 
         let gfx = new Gfx(this->settings, this->db);
 
-        try {
-            /*let this->maddy_db = new Database(
-                "sqlite:" . this->settings->library . this->credentials_db,
-                "",
-                ""
-            );*/
+        let html = this->header("Accounts") . "<div id='page-body'>";
 
+        try {
             let data = this->getAccounts();
-            
-            let html = this->header("Accounts") . "<div id='page-body'>";
-            
+                        
             if (count(data)) {
-                let html .= "
-                    <form action='" . this->global_url . "' method='post' class='box'>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Search<span class='required'>*</span></th>
-                                    <td>
-                                        <input name='q' type='text' value='" . (isset(_POST["q"]) ? _POST["q"]  : ""). "'>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan='2'>
-                                        <button type='submit' name='search' value='search' class='float-right'>search</button>";
-                if (isset(_POST["q"])) {
-                    let html .= "<a href='" . this->global_url . "' class='float-right button'>clear</a>";
-                }
-                let html .= "</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </form>";
+                let html .= gfx->searchBox(this->global_url);
 
                 let html .= "
                 <div class='box'>
