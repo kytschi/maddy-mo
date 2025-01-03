@@ -99,28 +99,15 @@ class Gfx extends Controller
     {
         var html = "";
 
-        let html = "<form action='" . url . "' method='post' class='box'>
-            <table>
-                <tbody>
-                    <tr>
-                        <th>Search<span class='required'>*</span></th>
-                        <td>
-                            <input name='q' type='text' value='" . (isset(_POST["q"]) ? _POST["q"]  : ""). "'>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan='2'>
-                            <button type='submit' name='search' value='search' class='float-right'>search</button>";
-            if (isset(_POST["q"])) {
-                let html .= "<a href='" . url . "' class='float-right button'>clear</a>";
-            }
-            let html .= "</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </form>";
+        let html = "<form action='" . url . "' method='post' id='search-box'>
+            <div class='col-auto'>Search</div>
+            <div class='col'><div class='input-group'><input name='q' type='text' value='" . (isset(_POST["q"]) ? _POST["q"]  : ""). "'></div></div>
+            <div class='col-auto'>
+                <button type='submit' name='search' value='search' class='float-right'>search</button>";
+                if (isset(_POST["q"])) {
+                    let html .= "<a href='" . url . "' class='float-right button'>clear</a>";
+                }
+        let html .= "</div></form>";
 
         return html;
     }

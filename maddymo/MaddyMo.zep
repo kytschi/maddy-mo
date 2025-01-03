@@ -94,6 +94,7 @@ class MaddyMo extends Controller
 
         var routes = [
             "/locked": "Users",
+            "/logout": "Users",
             "/accounts": "Accounts",
             "/dashboard": "Dashboard",
             "/settings": "Settings",
@@ -178,7 +179,7 @@ class MaddyMo extends Controller
                     <div class='row w-100'>";
         if (this->logged_in) {
             echo "
-                        <div id='side-menu' class='col-auto'>
+                        <div id='side-menu'>
                             <h1>Maddy Mo</h1>
                             <ul>
                                 <li>
@@ -209,6 +210,15 @@ class MaddyMo extends Controller
                                     <a href='" . this->urlAddKey("/users") . "'>Users</a>
                                 </li>
                             </ul>
+                            <div id='side-menu-footer'>
+                                <a href='" . this->urlAddKey("/logout") . "' class='button'>
+                                    <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='currentColor' viewBox='0 0 16 16'>
+                                        <path fill-rule='evenodd' d='M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0z'/>
+                                        <path fill-rule='evenodd' d='M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708z'/>
+                                    </svg>
+                                    <label>Logout</label>
+                                </a>
+                            </div>
                         </div>";
         }
         echo "<div" . (this->logged_in ? " id='page'" : "") . " class='col'>";

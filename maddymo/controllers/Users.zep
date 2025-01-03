@@ -22,6 +22,7 @@ class Users extends Controller
 
     public routes = [
         "/locked": "login",
+        "/logout": "logout",
         "/users/add": "add",
         "/users/edit": "edit",
         "/users": "index"
@@ -311,6 +312,12 @@ class Users extends Controller
                 gfx->buttonLogin() .
             "</div>
         </form></div>";
+    }
+
+    public function logout()
+    {
+        unset(_SESSION[this->settings->session_key]);
+        this->redirect(this->urlAddKey("/locked"));
     }
 
     public function render(model, mode = "add")

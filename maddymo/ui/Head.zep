@@ -116,6 +116,7 @@ class Head extends Controller
             border: 1px solid var(--box-border-colour);
             border-radius: var(--box-radius);
             color: var(--text-colour);
+            cursor: pointer;
         }
         button {
             display: inline-flex;
@@ -133,6 +134,7 @@ class Head extends Controller
             display: block;
             width: 100%;
             font-size: 0.8em;
+            cursor: pointer;
         }
         .btn-success {
             background-color: var(--success-background-colour);
@@ -197,7 +199,7 @@ class Head extends Controller
             color: var(--text-danger);
         }
 
-        .box, .pagination, .toolbar, table {
+        .box, .pagination, .toolbar, #search-box {
             background-color: var(--box-background-colour);
             background-clip: border-box;
             border: 1px solid var(--box-border-colour);
@@ -265,18 +267,38 @@ class Head extends Controller
             border-top-left-radius: var(--box-radius);
             border-top-right-radius: var(--box-radius);
         }
-        .box-title, table th, table td {
+        .box-title {
             padding: 20px;
             border-bottom: 1px solid var(--box-border-colour);
         }
-        .box-title, table th {
+        .box-title {
             background-color: var(--box-title-background-colour);
         }
 
-        table  {
+        #search-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             width: 100%;
+            margin-bottom: 20px;
+        }
+        #search-box .input-group, #search-box .input-group input {
+            margin-bottom: 0;
+        }
+        #search-box .col-auto {
+            padding:10px 20px;
+        }
+
+        table  {
+            margin: 10px;
+            width: calc(100% - 20px);
             vertical-align: top;
             border-collapse: collapse;
+            border: 0;
+        }
+        table th, table td {
+            padding: 0 10px;
+            border-bottom: 1px solid var(--box-border-colour);
         }
         table > thead {
             vertical-align: bottom;
@@ -295,7 +317,6 @@ class Head extends Controller
             border-bottom-color: var(--box-border-colour);
         }
         table > :not(caption) > * > * {
-            padding: .5rem .5rem;
             background-color: var(--box-background-colour);
             border-bottom-width: 1px;
             box-shadow: inset 0 0 0 9999px var(--table-accent-bg);
@@ -334,15 +355,11 @@ class Head extends Controller
         #header .col, #page-body {
             padding: 20px;
         }
-        #side-menu h1 {
-            margin-top: 0;
-            padding-top: 0;
-            font-size: 16pt;
-        }
         #page {
             width: calc(100% - 240px);
             margin-left: 240px;
         }
+
         #side-menu {
             position: fixed;
             padding: 20px;
@@ -351,6 +368,9 @@ class Head extends Controller
             background-color: #212631;
             border-right: 1px solid #323a49;
             min-height: 100vh;
+            display: flex;
+            flex: 0 0 auto;
+            flex-direction: column;
         }
         #side-menu a {
             color: #fff;
@@ -364,6 +384,26 @@ class Head extends Controller
         }
         #side-menu li svg {
             margin-right: 10px;
+        }
+        #side-menu h1 {
+            margin-top: 0;
+            padding-top: 0;
+            font-size: 16pt;
+        }
+        #side-menu-footer {
+            border-top: 1px solid #fff;
+            margin-top: auto;
+            margin-bottom: 20px;
+        }
+        #side-menu-footer .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            width: 80px;
+            border: none;
+        }
+        #side-menu-footer .button svg {
+            fill: #fff;
         }
 
         .text-right {
